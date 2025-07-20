@@ -1,13 +1,13 @@
-const {obenerTodosLosUsuariosService, obteneUsuriosPorIdService, crearUsuarioService,iniciarSesionService} = require("../services/usuarios.services")
+const {obtenerTodosLosUsuariosService, obteneUsuriosPorIdService, crearUsuarioService,iniciarSesionService, obtenerUsuarioPorIdService} = require("../services/usuarios.services")
 
 const obtenerTodosLosUsuarios = async (req,res)=>{
-  const {statusCode,usuarios}= await  obenerTodosLosUsuariosService();
+  const {statusCode,usuarios}= await  obtenerTodosLosUsuariosService();
   res.status(statusCode).json({usuarios})
 
 }
 
 const obtenerUsuarioPorId = async (req,res)=> {
-    const{statusCode,usuario} = await obteneUsuriosPorIdService(req.params.id);
+    const{statusCode,usuario} = await obtenerUsuarioPorIdService(req.params.id);
     res.status(statusCode).json({usuario})
 }
 
