@@ -2,7 +2,8 @@ const argon = require("argon2");
 const { token } = require("morgan");
 const jwt = require("jsonwebtoken");
 const usuariosModel = require("../models/usuarios.model")
-const CarritoModel = require("../models/carrito.model")
+const CarritoModel = require("../models/carrito.model");
+const { registroExitoso } = require("../helpers/mensajes.nodemailer.helper");
 
 const obtenerTodosLosUsuariosService = async () => {
     const usuarios = await usuariosModel.find();
@@ -31,9 +32,11 @@ const crearUsuarioService = async (body) => {
     }
 
     const nuevoUsuario = new usuariosModel(body);
-   const carritoUsuario = new CarritoModel({idUsuario: nuevoUsuario._id})
+    const carritoUsuario = new CarritoModel({idUsuario: nuevoUsuario._id})
     nuevoUsuario.contraseniaUsuario = await argon.hash(body.contraseniaUsuario);
     nuevoUsuario.idCarrito = carritoUsuario._id
+
+    const res= await registroExitoso(body.emailUsuario, body.nuevoUsuario)
 
     await nuevoUsuario.save();
     await carritoUsuario.save();
