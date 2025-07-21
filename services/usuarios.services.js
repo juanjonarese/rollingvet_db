@@ -22,7 +22,7 @@ const obteneUsuriosPorIdService = async (idUsuario) => {
 
 
 const crearUsuarioService = async (body) => {
-    
+    console.log(body)
     if (!body.emailUsuario || !body.contraseniaUsuario) {
         return {
             msg: "Faltan emailUsuario o contrasenia",
