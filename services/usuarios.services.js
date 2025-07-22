@@ -2,7 +2,7 @@ const argon = require("argon2");
 const { token } = require("morgan");
 const jwt = require("jsonwebtoken");
 const usuariosModel = require("../models/usuarios.model")
-const CarritoModel = require("../models/carrito.model")
+
 
 const obtenerTodosLosUsuariosService = async () => {
     const usuarios = await usuariosModel.find();
@@ -21,66 +21,62 @@ const obteneUsuriosPorIdService = async (idUsuario) => {
 };
 
 
-const crearUsuarioService = async (body) => {
-    
-    if (!body.emailUsuario || !body.contraseniaUsuario) {
-        return {
-            msg: "Faltan emailUsuario o contrasenia",
-            statusCode: 400
-        };
-    }
-
-    const nuevoUsuario = new usuariosModel(body);
-   const carritoUsuario = new CarritoModel({idUsuario: nuevoUsuario._id})
-    nuevoUsuario.contraseniaUsuario = await argon.hash(body.contraseniaUsuario);
-    nuevoUsuario.idCarrito = carritoUsuario._id
-
-    await nuevoUsuario.save();
-    await carritoUsuario.save();
-    
-
-    return {
-        msg: "usuario creado con exito",
-        statusCode: 201
-    };
-}
-
 
 const iniciarSesionService = async (body) => {
-     console.log(body)
-
-    const usuarioExiste = await usuariosModel.findOne({ emailUsuario: body.emailUsuario });
-
-    if (!usuarioExiste) {
-        return {
-            msg: "usuario o contraseña incorrecta User",
-            statusCode: 400,
+    try {
+        const usuarioExiste = await usuariosModel.findOne({ emailUsuario: body.emailUsuario });
+     
+        if (!usuarioExiste) {
+            return {
+                msg: "usuario o contraseña incorrecta User",
+                statusCode: 400,
+            }
         }
-    }
 
-    const passCheck = await argon.verify(usuarioExiste.contraseniaUsuario, body.contraseniaUsuario)
-    if (!passCheck) {
-        return {
-            msg: "usuario o contraseña incorrecta Pass",
-            statusCode: 400,
+        // VERIFICACIÓN AGREGADA: Comprobar si la contraseña existe y no está vacía
+        if (!usuarioExiste.contraseniaUsuario || usuarioExiste.contraseniaUsuario.trim() === '') {
+            console.error('Usuario encontrado pero sin contraseña válida:', {
+                id: usuarioExiste._id,
+                email: usuarioExiste.emailUsuario,
+                password: usuarioExiste.contraseniaUsuario
+            });
+            return {
+                msg: "Error en la cuenta del usuario. Contacte al administrador.",
+                statusCode: 400,
+            }
         }
-    }
+
+        const passCheck = await argon.verify(usuarioExiste.contraseniaUsuario, body.contraseniaUsuario)
+        console.log('Resultado de verificación:', passCheck)
+        
+        if (!passCheck) {
+            return {
+                msg: "usuario o contraseña incorrecta Pass",
+                statusCode: 400,
+            }
+        }
+
         const payload = {
-        idUsuario : usuarioExiste._id,
-        idCarrito : usuarioExiste.idCarrito,
-        rolUsuario : usuarioExiste.rolUsuario
+            idUsuario: usuarioExiste._id,
+            idCarrito: usuarioExiste.idCarrito,
+            rolUsuario: usuarioExiste.rolUsuario
+        }
 
-}
-
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn:"1h"})
-    
-    return {
-        msg: "usuario logeado",
-        token,
-        statusCode: 200,
+        const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn:"1h"})
+        
+        return {
+            msg: "usuario logeado",
+            token,
+            statusCode: 200,
+        }
+        
+    } catch (error) {
+        console.error('Error en iniciarSesionService:', error);
+        return {
+            msg: "Error interno del servidor",
+            statusCode: 500,
+        }
     }
 }
 
-
-
-module.exports = { obtenerTodosLosUsuariosService, obteneUsuriosPorIdService, crearUsuarioService,iniciarSesionService }
+module.exports = { obtenerTodosLosUsuariosService, obteneUsuriosPorIdService, iniciarSesionService }

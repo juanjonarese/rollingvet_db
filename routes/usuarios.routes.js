@@ -2,21 +2,15 @@ const express = require("express");
 const { 
     obtenerTodosLosUsuarios, 
     obtenerUsuarioPorId, 
-    crearUsuario, inciarSesion
-    
+    iniciarSesion  
 } = require("../controllers/usuarios.controllers");
 
 const router = express.Router();
 
-
-router.post("/login", inciarSesion);
-
+router.post("/login", iniciarSesion); 
 
 router.get("/", obtenerTodosLosUsuarios);
 router.get("/:id", obtenerUsuarioPorId);
-router.post("/", crearUsuario);
-
-
 
 
 module.exports = router;
