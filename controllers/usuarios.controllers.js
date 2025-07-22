@@ -1,7 +1,8 @@
+
 const {
     obtenerTodosLosUsuariosService, 
     obteneUsuriosPorIdService, 
-    iniciarSesionService
+    iniciarSesionService,crearUsuarioService
 } = require("../services/usuarios.services")
 
 const obtenerTodosLosUsuarios = async (req, res) => {
@@ -14,6 +15,7 @@ const obtenerTodosLosUsuarios = async (req, res) => {
     }
 }
 
+
 const obtenerUsuarioPorId = async (req, res) => {
     try {
         const { statusCode, usuario } = await obteneUsuriosPorIdService(req.params.id);
@@ -23,6 +25,7 @@ const obtenerUsuarioPorId = async (req, res) => {
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 }
+
 
 
 const iniciarSesion = async (req, res) => {
@@ -39,5 +42,5 @@ const iniciarSesion = async (req, res) => {
 module.exports = {
     obtenerTodosLosUsuarios,
     obtenerUsuarioPorId, 
-    iniciarSesion 
+    iniciarSesion ,crearUsuario
 }
