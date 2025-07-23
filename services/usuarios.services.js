@@ -2,6 +2,7 @@ const argon = require("argon2");
 const { token } = require("morgan");
 const jwt = require("jsonwebtoken");
 const usuariosModel = require("../models/usuarios.model")
+const carritoMascotas = require("../models/carritoMascotas.model")
 
 
 
@@ -42,7 +43,7 @@ const crearUsuarioService = async (body) => {
         }
 
         // Crear el carrito primero para obtener su ID
-        const carritoUsuario = new CarritoModel();
+        const carritoUsuario = new carritoMascotas();
         await carritoUsuario.save();
 
         // Hashear la contraseña

@@ -11,5 +11,5 @@ const CarritoSchema = new Schema({
   },
 });
 
-const CarritoModel = model("carrito", CarritoSchema);
-module.exports = CarritoModel;
+const carritoMascotas = model("carrito", CarritoSchema);
+module.exports = carritoMascotas;
