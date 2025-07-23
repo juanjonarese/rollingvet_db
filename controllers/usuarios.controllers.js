@@ -26,7 +26,20 @@ const obtenerUsuarioPorId = async (req, res) => {
     }
 }
 
+const crearUsuario = async (req, res) => {
+    try {
 
+        const { statusCode, msg, usuario } = await crearUsuarioService(req.body);
+        
+        res.status(statusCode).json({ 
+            msg,
+            usuario: usuario || null
+        });
+    } catch (error) {
+        console.error('Error en crearUsuario controller:', error);
+        res.status(500).json({ msg: 'Error interno del servidor' });
+    }
+}
 
 const iniciarSesion = async (req, res) => {
     try {

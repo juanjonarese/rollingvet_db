@@ -92,9 +92,25 @@ const crearUsuarioService = async (body) => {
 }
 
 
+const obtenerTodosLosUsuariosService = async () => {
+    const usuarios = await usuariosModel.find();
+    return {
+        usuarios,
+        statusCode: 200
+    }
+}
+
+const obteneUsuriosPorIdService = async (idUsuario) => {
+    const usuario = await usuariosModel.findById(idUsuario);
+    return {
+        usuario,
+        statusCode: 200
+    };
+};
 
 
-=======
+
+
 
 const iniciarSesionService = async (body) => {
     try {
