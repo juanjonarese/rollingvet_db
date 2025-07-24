@@ -3,6 +3,9 @@ const { token } = require("morgan");
 const jwt = require("jsonwebtoken");
 const usuariosModel = require("../models/usuarios.model")
 const carritoMascotas = require("../models/carritoMascotas.model")
+const { registroExitoso } = require("../helpers/mensajes.nodemailer.helper"); 
+const { recuperarContrasenia } = require("../helpers/mensajes.nodemailer.helper");
+
 
 
 
@@ -59,6 +62,9 @@ const crearUsuarioService = async (body) => {
         // Actualizar el carrito con el ID del usuario
         carritoUsuario.idUsuario = nuevoUsuario._id;
         await carritoUsuario.save();
+
+        //envio el mail de confirmacion
+        registroExitoso (body.emailUsuario, body.nombreUsuario)
 
         // Guardar el usuario
         await nuevoUsuario.save();
@@ -170,5 +176,40 @@ const iniciarSesionService = async (body) => {
     }
 }
 
-module.exports = { obtenerTodosLosUsuariosService, obteneUsuriosPorIdService, iniciarSesionService, crearUsuarioService }
+const recuperarContraseniaUsuarioServices = async (emailUsuario) => {
+  try {
+    console.log(emailUsuario);
+    const usuarioExiste = await usuariosModel.findOne({ emailUsuario });
+    console.log(usuarioExiste);
+
+    if (usuarioExiste) {
+      const payload = {
+        idUsuario: usuarioExiste._id,
+      };
+
+      const tokenRecuperarContrasenia = jwt.sign(
+        payload,
+        process.env.JWT_SECRET_RECOVERY_PASS
+      );
+
+      await recuperarContrasenia(
+        tokenRecuperarContrasenia,
+        usuarioExiste.emailUsuario
+      );
+
+      return {
+        msg: "Mail enviado",
+        statusCode: 200,
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      error,
+      statusCode: 500,
+    };
+  }
+};
+
+module.exports = { obtenerTodosLosUsuariosService, obteneUsuriosPorIdService, iniciarSesionService, crearUsuarioService, recuperarContraseniaUsuarioServices }
 
