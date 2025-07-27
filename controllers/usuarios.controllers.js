@@ -2,7 +2,7 @@
 const {
     obtenerTodosLosUsuariosService, 
     obteneUsuriosPorIdService, 
-    iniciarSesionService,crearUsuarioService
+    iniciarSesionService,crearUsuarioService, recuperarContraseniaUsuarioServices
 } = require("../services/usuarios.services")
 
 const obtenerTodosLosUsuarios = async (req, res) => {
@@ -52,8 +52,19 @@ const iniciarSesion = async (req, res) => {
     }
 }
 
+const recuperarContraseniaUsuario = async (req, res) => {
+  const { msg, statusCode, error } = await recuperarContraseniaUsuarioServices(
+    req.body.emailUsuario
+  );
+  try {
+    res.status(statusCode).json({ msg });
+  } catch {
+    res.status(statusCode).json({ error });
+  }
+};
+
 module.exports = {
     obtenerTodosLosUsuarios,
     obtenerUsuarioPorId, 
-    iniciarSesion ,crearUsuario
+    iniciarSesion ,crearUsuario, recuperarContraseniaUsuario
 }
