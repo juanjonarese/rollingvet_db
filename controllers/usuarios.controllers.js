@@ -44,8 +44,8 @@ const crearUsuario = async (req, res) => {
 const iniciarSesion = async (req, res) => {
     try {
        
-        const { statusCode, msg, token } = await iniciarSesionService(req.body);
-        res.status(statusCode).json({ msg, token });
+        const { statusCode, msg, token, idUsuario } = await iniciarSesionService(req.body);
+        res.status(statusCode).json({ msg, token,idUsuario });
     } catch (error) {
         console.error('Error en iniciarSesion controller:', error);
         res.status(500).json({ msg: 'Error interno del servidor' });

@@ -23,7 +23,7 @@ try {
   
   }
 
- catch {
+ catch (error){
    return{
     error,
     statusCode: 500,
