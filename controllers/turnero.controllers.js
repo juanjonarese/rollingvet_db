@@ -5,7 +5,7 @@ const {
 
 exports.crearTurno = async (req, res) => {
   try {
-    const turno = await turnoService.crearTurno(req.body);
+    const turno = await turnoService.crearTurnoServices(req.body);
     res.status(201).json(turno);
   } catch (error) {
     res.status(400).json({ mensaje: error.message });
