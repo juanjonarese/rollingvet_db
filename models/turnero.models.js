@@ -1,13 +1,15 @@
 const mongoose = require("mongoose");
 
 const turnoSchema = new mongoose.Schema({
-  detalleCita: { type: String, required: true },
-  veterinario: {
+  nombre: { type: String, required: true },
+  especie: {
     type: String,
-    enum: ["Veterinario A", "Veterinario B"],
     required: true,
+    enum: ["perro", "gato", "ave", "otros"],
   },
-  mascota: { type: String, required: true },
+  raza: { type: String },
+
+  detalleCita: { type: String, required: true },
   fecha: { type: Date, required: true },
   hora: { type: String, required: true },
 });
