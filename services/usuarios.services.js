@@ -19,23 +19,6 @@ const crearUsuarioService = async (body) => {
             };
         }
 
-        // Validar formato de email básico
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(body.emailUsuario)) {
-            return {
-                msg: "El formato del email no es válido",
-                statusCode: 400
-            };
-        }
-
-        // Validar longitud mínima de contraseña
-        if (body.contraseniaUsuario.length < 6) {
-            return {
-                msg: "La contraseña debe tener al menos 6 caracteres",
-                statusCode: 400
-            };
-        }
-
         // Verificar si el usuario ya existe
         const usuarioExistente = await usuariosModel.findOne({ emailUsuario: body.emailUsuario });
         if (usuarioExistente) {
@@ -125,18 +108,14 @@ const iniciarSesionService = async (body) => {
      
         if (!usuarioExiste) {
             return {
-                msg: "usuario o contraseña incorrecta User",
+                msg: "usuario o contraseña incorrecta",
                 statusCode: 400,
             }
         }
 
-        // VERIFICACIÓN AGREGADA: Comprobar si la contraseña existe y no está vacía
-        if (!usuarioExiste.contraseniaUsuario || usuarioExiste.contraseniaUsuario.trim() === '') {
-            console.error('Usuario encontrado pero sin contraseña válida:', {
-                id: usuarioExiste._id,
-                email: usuarioExiste.emailUsuario,
-                password: usuarioExiste.contraseniaUsuario
-            });
+        // Comprobar si la contraseña existe y no está vacía
+        if (!usuarioExiste.contraseniaUsuario) {
+          
             return {
                 msg: "Error en la cuenta del usuario. Contacte al administrador.",
                 statusCode: 400,
@@ -148,7 +127,7 @@ const iniciarSesionService = async (body) => {
         
         if (!passCheck) {
             return {
-                msg: "usuario o contraseña incorrecta Pass",
+                msg: "usuario o contraseña incorrecta",
                 statusCode: 400,
             }
         }
