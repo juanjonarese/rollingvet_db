@@ -1,6 +1,8 @@
 const { transporter } = require("../middlewares/nodemailer.middleware");
 
 const registroExitoso= async (emailUsuario, nombreUsuario)=> {
+
+ 
 try {
     
     await transporter.sendMail({
@@ -19,11 +21,13 @@ try {
   return{
     msg: "ok",
     statusCode: 200,
+    
   }  
   
   }
 
  catch (error){
+  console.log(error)
    return{
     error,
     statusCode: 500,
