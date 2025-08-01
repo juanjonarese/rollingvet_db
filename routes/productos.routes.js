@@ -9,5 +9,6 @@ router.get ("/:id", ObtenerProductoPorId)
 router.post ("/", CrearProducto)
 router.put ("/:id", ActalizarUnProductoPorId)
 router.delete ("/:id", EliminarProducto)
+router.post ("/pagarCarritoMp");
 
 module.exports = router  
