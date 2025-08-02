@@ -191,5 +191,6 @@ const recuperarContraseniaUsuarioServices = async (emailUsuario) => {
   }
 };
 
+
 module.exports = { obtenerTodosLosUsuariosService, obteneUsuriosPorIdService, iniciarSesionService, crearUsuarioService, recuperarContraseniaUsuarioServices }
 
