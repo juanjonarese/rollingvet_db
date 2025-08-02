@@ -53,15 +53,17 @@ const iniciarSesion = async (req, res) => {
 }
 
 const recuperarContraseniaUsuario = async (req, res) => {
-  const { msg, statusCode, error } = await recuperarContraseniaUsuarioServices(
-    req.body.emailUsuario
-  );
   try {
+    const { msg, statusCode } = await recuperarContraseniaUsuarioServices(
+      req.body.emailUsuario
+    );
     res.status(statusCode).json({ msg });
-  } catch {
-    res.status(statusCode).json({ error });
+  } catch (error) {
+    console.error("Error al recuperar contraseña:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
+
 
 module.exports = {
     obtenerTodosLosUsuarios,
