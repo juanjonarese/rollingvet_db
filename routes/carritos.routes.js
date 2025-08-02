@@ -1,5 +1,5 @@
 const router = express.Router()
 
-router.post ("/pagarCarritoMp");
+router.post("/pagarCarritoMp", pagarCarritoMp);
 
 module.exports = router
