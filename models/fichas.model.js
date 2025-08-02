@@ -66,6 +66,7 @@ const FichaSchema = new Schema({
   // campo editable por el veterinario
   detallesConsulta: {
     type: String,
+    default: "",
     trim: true,
   }
 });
