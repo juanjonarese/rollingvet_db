@@ -1,14 +1,14 @@
 const {
-  crearTurnosServices,
+  crearTurnoServices,
   obtenerTodosLosTurnosServices,
 } = require("../services/turnero.services");
 
 exports.crearTurno = async (req, res) => {
   try {
-    const turno = await crearTurnosServices(req.body);
+    const turno = await crearTurnoServices(req.body);
     res.status(201).json(turno);
   } catch (error) {
-    // res.status(400).json({ mensaje: error.message });
+    res.status(400).json({ mensaje: error.message });
   }
 };
 

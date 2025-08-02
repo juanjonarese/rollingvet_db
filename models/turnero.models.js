@@ -8,10 +8,12 @@ const turnoSchema = new mongoose.Schema({
     enum: ["perro", "gato", "ave", "otros"],
   },
   raza: { type: String },
-
-  detalleCita: { type: String, required: true },
+  detalleCita: { type: String },
   fecha: { type: Date },
   hora: { type: String },
 });
 
-module.exports = mongoose.model("TurnoModel", turnoSchema);
+
+const TurnoModel = mongoose.model("Turno", turnoSchema);
+
+module.exports = TurnoModel;
