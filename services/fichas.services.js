@@ -17,6 +17,7 @@ const crearFichaService = async (body) => {
     await nuevaFicha.save();
     return {
         msg: "Ficha generada exitosamente",
+        idFicha: nuevaFicha._id,
         statusCode: 201,
     }
 }
