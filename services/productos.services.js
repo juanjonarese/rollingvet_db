@@ -67,6 +67,7 @@ preference.create({
       success: 'Aqui la url del sitio web con el pago exitoso',
       failure: 'Aqui la url del sitio web con el pago fallido',
       pending: 'Aqui la url del sitio web con el pago pendiente'
+      // las backs urls deben estar deployadas desde el frontend
     },
     auto_return: "approved",
   }
@@ -78,5 +79,5 @@ module.exports={
     ObtenerProductoPorIdService,
     CrearProductoService,
     ActalizarUnProductoPorIdService,
-    EliminarProductoService
+    EliminarProductoService,
 }
