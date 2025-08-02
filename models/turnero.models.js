@@ -10,8 +10,8 @@ const turnoSchema = new mongoose.Schema({
   raza: { type: String },
 
   detalleCita: { type: String, required: true },
-  fecha: { type: Date, required: true },
-  hora: { type: String, required: true },
+  fecha: { type: Date },
+  hora: { type: String },
 });
 
 module.exports = mongoose.model("TurnoModel", turnoSchema);
