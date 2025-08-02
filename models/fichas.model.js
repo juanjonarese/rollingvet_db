@@ -1,6 +1,29 @@
 const { Schema, model } = require("mongoose");
 
 const FichaSchema = new Schema({
+  // datos de la persona
+  nombreUsuario: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  apellidoUsuario: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  telefonoUsuario: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  emailUsuario: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+
+  // datos del animal
   nombreMascota: {
     type: String,
     required: true,
@@ -11,27 +34,40 @@ const FichaSchema = new Schema({
     required: true,
     trim: true,
   },
-    idUsuario: {
+  razaMascota: {
     type: String,
+    trim: true,
   },
-  consulta: [
-    {
-      fecha: {
-        type: Date,
-        default: Date.now,
-        required: true,
-      },
-      motivo: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-      veterinario: {
-        type: Schema.Types.ObjectId,
-        ref: "usuarios",
-      }
-    }
-  ]
+  edadMascota: {
+    type: String,
+    trim: true,
+  },
+
+  // datos del turno
+  motivoConsulta: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  fechaConsulta: {
+    type: String,
+    required: true,
+  },
+  horaConsulta: {
+    type: String,
+    required: true,
+  },
+  veterinarioConsulta: {
+    type: Schema.Types.ObjectId,
+    ref: "usuarios",
+    required: true,
+  },
+
+  // campo editable por el veterinario
+  detallesConsulta: {
+    type: String,
+    trim: true,
+  }
 });
 
 const FichasModel = model("fichas", FichaSchema);
