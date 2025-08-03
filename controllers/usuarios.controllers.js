@@ -67,18 +67,22 @@ const recuperarContraseniaUsuario = async (req, res) => {
 
 
 const cambioDeContraseniaUsuarioToken = async (req, res) => {
-  console.log("token query", req.query.token);
-  const { msg, statusCode, error } =
-    await cambioDeContraseniaUsuarioTokenServices(
+  try {
+    console.log("token query", req.query.token);
+    console.log("nueva contraseña", req.body.contrasenia);
+
+    const { msg, statusCode } = await cambioDeContraseniaUsuarioTokenServices(
       req.query.token,
       req.body.contrasenia
     );
-  try {
+
     res.status(statusCode).json({ msg });
-  } catch {
-    res.status(statusCode).json({ error });
+  } catch (error) {
+    console.error("Error en cambioDeContraseniaUsuarioToken:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
+
 module.exports = {
     obtenerTodosLosUsuarios,
     obtenerUsuarioPorId, 

@@ -19,7 +19,7 @@ router.post("/login", iniciarSesion);
 router.get("/", obtenerTodosLosUsuarios);
 router.get("/:id", obtenerUsuarioPorId);
 router.post("/recoveryPass", recuperarContraseniaUsuario)
-router.post("/changePass", cambioDeContraseniaUsuarioToken)
+router.post("/changeNewPassUser", cambioDeContraseniaUsuarioToken)
 
 
 module.exports = router;
