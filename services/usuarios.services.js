@@ -191,5 +191,26 @@ const recuperarContraseniaUsuarioServices = async (emailUsuario) => {
   }
 };
 
-module.exports = { obtenerTodosLosUsuariosService, obteneUsuriosPorIdService, iniciarSesionService, crearUsuarioService, recuperarContraseniaUsuarioServices }
+cambiarContraseniaUsuarioServices = async(token, nuevacontrasenia) =>{
+    try {
+        const verificarUsuario = jwt.verify(token, process.env.JWT_SECRET)
+
+        const usuario = await usuariosModel.findOne({_id: verificarUsuario.idUsuario})
+        usuario.contraseniaUsuario = await argon.hash(nuevacontrasenia)
+        await usuario.save()
+
+        return{
+            msg: "cambio de contraseña registroExitoso",
+            statusCode: 200,
+        }
+
+    } catch (error) {
+      return {
+      error,
+      statusCode: 500,
+    };  
+    }
+}
+
+module.exports = { obtenerTodosLosUsuariosService, obteneUsuriosPorIdService, iniciarSesionService, crearUsuarioService, recuperarContraseniaUsuarioServices, cambiarContraseniaUsuarioServices }
 
