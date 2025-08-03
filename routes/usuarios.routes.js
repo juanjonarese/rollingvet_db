@@ -6,7 +6,7 @@ const {
     obtenerTodosLosUsuarios, 
     obtenerUsuarioPorId, 
     iniciarSesion,  
-    recuperarContraseniaUsuario, cambioDeContraseniaUsuarioToken
+    recuperarContraseniaUsuario, cambioDeContraseniaUsuarioToken,actualizarRolUsuario
 
 } = require("../controllers/usuarios.controllers");
 
@@ -18,6 +18,7 @@ router.post("/", crearUsuario);
 router.post("/login", iniciarSesion); 
 router.get("/", obtenerTodosLosUsuarios);
 router.get("/:id", obtenerUsuarioPorId);
+router.put("/:id/rol", actualizarRolUsuario);
 router.post("/recoveryPass", recuperarContraseniaUsuario)
 router.post("/changeNewPassUser", cambioDeContraseniaUsuarioToken)
 
