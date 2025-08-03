@@ -1,8 +1,9 @@
+const usuariosModel = require("../models/usuarios.model");
 
 const {
     obtenerTodosLosUsuariosService, 
     obteneUsuriosPorIdService, 
-    iniciarSesionService,crearUsuarioService, recuperarContraseniaUsuarioServices, cambioDeContraseniaUsuarioTokenServices
+    iniciarSesionService,crearUsuarioService, recuperarContraseniaUsuarioServices, cambioDeContraseniaUsuarioTokenServices, actualizarRolUsuarioService
 } = require("../services/usuarios.services")
 
 const obtenerTodosLosUsuarios = async (req, res) => {
@@ -83,8 +84,34 @@ const cambioDeContraseniaUsuarioToken = async (req, res) => {
   }
 };
 
+
+
+
+const actualizarRolUsuario = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rolUsuario } = req.body;
+
+    const usuarioActualizado = await usuariosModel.findByIdAndUpdate(
+      id,
+      { rolUsuario: rolUsuario},
+      { new: true }
+    );
+
+    if (!usuarioActualizado) {
+      return res.status(404).json({ msg: "Usuario no encontrado" });
+    }
+
+    res.status(200).json({ msg: "Rol actualizado", usuario: usuarioActualizado });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error al actualizar el rol" });
+  }
+};
+
+
 module.exports = {
     obtenerTodosLosUsuarios,
     obtenerUsuarioPorId, 
-    iniciarSesion ,crearUsuario, recuperarContraseniaUsuario, cambioDeContraseniaUsuarioToken
+    iniciarSesion ,crearUsuario, recuperarContraseniaUsuario, cambioDeContraseniaUsuarioToken, actualizarRolUsuario
 }

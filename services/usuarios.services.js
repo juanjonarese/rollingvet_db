@@ -223,5 +223,15 @@ const cambioDeContraseniaUsuarioTokenServices = async (
   }
 };
 
-module.exports = { obtenerTodosLosUsuariosService, obteneUsuriosPorIdService, iniciarSesionService, crearUsuarioService, recuperarContraseniaUsuarioServices, cambioDeContraseniaUsuarioTokenServices}
+
+const actualizarRolUsuarioService = async (id, nuevoRol) => {
+  const usuario = await UsuarioModel.findByIdAndUpdate(
+    id,
+    { rolUsuario: nuevoRol },
+    { new: true } // Devuelve el usuario actualizado
+  );
+  return usuario;
+};
+
+module.exports = { obtenerTodosLosUsuariosService, obteneUsuriosPorIdService, iniciarSesionService, crearUsuarioService, recuperarContraseniaUsuarioServices, cambioDeContraseniaUsuarioTokenServices, actualizarRolUsuarioService}
 
