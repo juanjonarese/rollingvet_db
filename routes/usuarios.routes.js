@@ -6,7 +6,7 @@ const {
     obtenerTodosLosUsuarios, 
     obtenerUsuarioPorId, 
     iniciarSesion,  
-    recuperarContraseniaUsuario
+    recuperarContraseniaUsuario, cambiarContraseniaUsuario
 
 } = require("../controllers/usuarios.controllers");
 
@@ -27,7 +27,7 @@ router.post("/login", iniciarSesion);
 router.get("/", obtenerTodosLosUsuarios);
 router.get("/:id", obtenerUsuarioPorId);
 router.post("/recoveryPass", recuperarContraseniaUsuario)
-
+router.post("/changePass", cambiarContraseniaUsuario)
 
 
 module.exports = router;
