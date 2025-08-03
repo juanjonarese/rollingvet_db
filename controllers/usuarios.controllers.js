@@ -2,7 +2,7 @@
 const {
     obtenerTodosLosUsuariosService, 
     obteneUsuriosPorIdService, 
-    iniciarSesionService,crearUsuarioService, recuperarContraseniaUsuarioServices, cambiarContraseniaUsuarioServices
+    iniciarSesionService,crearUsuarioService, recuperarContraseniaUsuarioServices, cambioDeContraseniaUsuarioTokenServices
 } = require("../services/usuarios.services")
 
 const obtenerTodosLosUsuarios = async (req, res) => {
@@ -64,18 +64,23 @@ const recuperarContraseniaUsuario = async (req, res) => {
   }
 };
 
-cambiarContraseniaUsuario = async (req,res) => {
-    const {msg, statusCode,error} = cambiarContraseniaUsuarioServices(req.body)
-   
-    try {
-        res.status(statusCode).json({ msg }); 
-    } catch (error) {
-        res.status(500).json({ error: "Error interno del servidor" });
-    }
-}
 
+
+const cambioDeContraseniaUsuarioToken = async (req, res) => {
+  console.log("token query", req.query.token);
+  const { msg, statusCode, error } =
+    await cambioDeContraseniaUsuarioTokenServices(
+      req.query.token,
+      req.body.contrasenia
+    );
+  try {
+    res.status(statusCode).json({ msg });
+  } catch {
+    res.status(statusCode).json({ error });
+  }
+};
 module.exports = {
     obtenerTodosLosUsuarios,
     obtenerUsuarioPorId, 
-    iniciarSesion ,crearUsuario, recuperarContraseniaUsuario, cambiarContraseniaUsuario
+    iniciarSesion ,crearUsuario, recuperarContraseniaUsuario, cambioDeContraseniaUsuarioToken
 }
