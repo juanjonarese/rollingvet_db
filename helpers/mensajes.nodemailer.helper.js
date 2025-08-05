@@ -48,7 +48,7 @@ try {
    
     html: `
     <b>Para ecuperar tu contraseña hace click en el link a continuacion:</b>
-    <a href="/recuperarConstrasenia"${token}>Ir a la página </a>
+    <a href="http://localhost:5173/changepass?token=${token}">Ir a la página </a>
     
 
     

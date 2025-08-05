@@ -1,8 +1,9 @@
+const usuariosModel = require("../models/usuarios.model");
 
 const {
     obtenerTodosLosUsuariosService, 
     obteneUsuriosPorIdService, 
-    iniciarSesionService,crearUsuarioService, recuperarContraseniaUsuarioServices
+    iniciarSesionService,crearUsuarioService, recuperarContraseniaUsuarioServices, cambioDeContraseniaUsuarioTokenServices, actualizarRolUsuarioService
 } = require("../services/usuarios.services")
 
 const obtenerTodosLosUsuarios = async (req, res) => {
@@ -53,18 +54,64 @@ const iniciarSesion = async (req, res) => {
 }
 
 const recuperarContraseniaUsuario = async (req, res) => {
-  const { msg, statusCode, error } = await recuperarContraseniaUsuarioServices(
-    req.body.emailUsuario
-  );
   try {
+    const { msg, statusCode } = await recuperarContraseniaUsuarioServices(
+      req.body.emailUsuario
+    );
     res.status(statusCode).json({ msg });
-  } catch {
-    res.status(statusCode).json({ error });
+  } catch (error) {
+    console.error("Error al recuperar contraseña:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
+
+
+
+const cambioDeContraseniaUsuarioToken = async (req, res) => {
+  try {
+    console.log("token query", req.query.token);
+    console.log("nueva contraseña", req.body.contrasenia);
+
+    const { msg, statusCode } = await cambioDeContraseniaUsuarioTokenServices(
+      req.query.token,
+      req.body.contrasenia
+    );
+
+    res.status(statusCode).json({ msg });
+  } catch (error) {
+    console.error("Error en cambioDeContraseniaUsuarioToken:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
+
+
+
+
+const actualizarRolUsuario = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rolUsuario } = req.body;
+
+    const usuarioActualizado = await usuariosModel.findByIdAndUpdate(
+      id,
+      { rolUsuario: rolUsuario},
+      { new: true }
+    );
+
+    if (!usuarioActualizado) {
+      return res.status(404).json({ msg: "Usuario no encontrado" });
+    }
+
+    res.status(200).json({ msg: "Rol actualizado", usuario: usuarioActualizado });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error al actualizar el rol" });
+  }
+};
+
 
 module.exports = {
     obtenerTodosLosUsuarios,
     obtenerUsuarioPorId, 
-    iniciarSesion ,crearUsuario, recuperarContraseniaUsuario
+    iniciarSesion ,crearUsuario, recuperarContraseniaUsuario, cambioDeContraseniaUsuarioToken, actualizarRolUsuario
 }
