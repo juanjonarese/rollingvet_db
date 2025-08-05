@@ -15,6 +15,8 @@ app.use(morgan("dev"));
 app.use("/usuarios", require("./routes/usuarios.routes"))
 // app.use("/carritos", require("./routes/carrito.routes"))
 
+app.use("/fichas", require("./routes/fichas.routes"))
+
 app.listen(8080, ()=>{
     console.log("servidor funcionando puerto",8080)
 })

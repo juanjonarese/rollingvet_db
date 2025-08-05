@@ -10,6 +10,10 @@ const obtenerFichasService = async () => {
 
 const obtenerFichaPorIDService = async (idFicha) => {
     const ficha = await FichasModel.findOne({ _id: idFicha})
+    return {
+        ficha,
+        statusCode: 200,
+    }
 }
 
 const crearFichaService = async (body) => {
