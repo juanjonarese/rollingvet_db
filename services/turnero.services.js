@@ -1,7 +1,7 @@
 const TurnoModel = require("../models/turnero.models");
 
 const crearTurnoServices = async (data) => {
-  const nuevoTurno = new Turno(data);
+  const nuevoTurno = new TurnoModel(data);
   return await nuevoTurno.save();
 };
 
