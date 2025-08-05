@@ -184,6 +184,9 @@ const recuperarContraseniaUsuarioServices = async (emailUsuario) => {
   }
 };
 
+
+
+
 const cambioDeContraseniaUsuarioTokenServices = async (
   token,
   nuevaContrasenia
@@ -234,4 +237,5 @@ const actualizarRolUsuarioService = async (id, nuevoRol) => {
 };
 
 module.exports = { obtenerTodosLosUsuariosService, obteneUsuriosPorIdService, iniciarSesionService, crearUsuarioService, recuperarContraseniaUsuarioServices, cambioDeContraseniaUsuarioTokenServices, actualizarRolUsuarioService}
+
 
