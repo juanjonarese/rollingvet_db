@@ -19,23 +19,6 @@ const crearUsuarioService = async (body) => {
             };
         }
 
-        // Validar formato de email básico
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(body.emailUsuario)) {
-            return {
-                msg: "El formato del email no es válido",
-                statusCode: 400
-            };
-        }
-
-        // Validar longitud mínima de contraseña
-        if (body.contraseniaUsuario.length < 6) {
-            return {
-                msg: "La contraseña debe tener al menos 6 caracteres",
-                statusCode: 400
-            };
-        }
-
         // Verificar si el usuario ya existe
         const usuarioExistente = await usuariosModel.findOne({ emailUsuario: body.emailUsuario });
         if (usuarioExistente) {
@@ -82,14 +65,7 @@ const crearUsuarioService = async (body) => {
 
     } catch (error) {
         console.error('Error en crearUsuarioService:', error);
-        
-        // Si es un error de duplicado de MongoDB
-        if (error.code === 11000) {
-            return {
-                msg: "Ya existe un usuario con este email",
-                statusCode: 409
-            };
-        }
+    
 
         return {
             msg: "Error interno del servidor",
@@ -125,18 +101,14 @@ const iniciarSesionService = async (body) => {
      
         if (!usuarioExiste) {
             return {
-                msg: "usuario o contraseña incorrecta User",
+                msg: "usuario o contraseña incorrecta",
                 statusCode: 400,
             }
         }
 
-        // VERIFICACIÓN AGREGADA: Comprobar si la contraseña existe y no está vacía
-        if (!usuarioExiste.contraseniaUsuario || usuarioExiste.contraseniaUsuario.trim() === '') {
-            console.error('Usuario encontrado pero sin contraseña válida:', {
-                id: usuarioExiste._id,
-                email: usuarioExiste.emailUsuario,
-                password: usuarioExiste.contraseniaUsuario
-            });
+        // Comprobar si la contraseña existe 
+        if (!usuarioExiste.contraseniaUsuario) {
+          
             return {
                 msg: "Error en la cuenta del usuario. Contacte al administrador.",
                 statusCode: 400,
@@ -144,11 +116,11 @@ const iniciarSesionService = async (body) => {
         }
 
         const passCheck = await argon.verify(usuarioExiste.contraseniaUsuario, body.contraseniaUsuario)
-        console.log('Resultado de verificación:', passCheck)
+        // console.log('Resultado de verificación:', passCheck)
         
         if (!passCheck) {
             return {
-                msg: "usuario o contraseña incorrecta Pass",
+                msg: "usuario o contraseña incorrecta",
                 statusCode: 400,
             }
         }
@@ -164,6 +136,7 @@ const iniciarSesionService = async (body) => {
         return {
             msg: "usuario logeado",
             token,
+            rolUsuario: usuarioExiste.rolUsuario,
             statusCode: 200,
         }
         
@@ -178,9 +151,9 @@ const iniciarSesionService = async (body) => {
 
 const recuperarContraseniaUsuarioServices = async (emailUsuario) => {
   try {
-    console.log(emailUsuario);
+    // console.log(emailUsuario);
     const usuarioExiste = await usuariosModel.findOne({ emailUsuario });
-    console.log(usuarioExiste);
+    // console.log(usuarioExiste);
 
     if (usuarioExiste) {
       const payload = {
@@ -211,5 +184,58 @@ const recuperarContraseniaUsuarioServices = async (emailUsuario) => {
   }
 };
 
-module.exports = { obtenerTodosLosUsuariosService, obteneUsuriosPorIdService, iniciarSesionService, crearUsuarioService, recuperarContraseniaUsuarioServices }
+
+
+
+const cambioDeContraseniaUsuarioTokenServices = async (
+  token,
+  nuevaContrasenia
+) => {
+//   console.log("token services", token);
+//   console.log("pass services", nuevaContrasenia);
+  try {
+    const verificarUsuario = jwt.verify(
+      token,
+      process.env.JWT_SECRET_RECOVERY_PASS
+    );
+
+    const usuario = await usuariosModel.findOne({
+      _id: verificarUsuario.idUsuario,
+    });
+
+    if (!usuario) {
+      return {
+        msg: "Usuario no encontrado o token inválido",
+        statusCode: 404,
+      };
+    }
+
+    usuario.contraseniaUsuario = await argon.hash(nuevaContrasenia);
+    await usuario.save();
+
+    return {
+      msg: "Cambio de contraseña exitoso",
+      statusCode: 200,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      error,
+      statusCode: 500,
+    };
+  }
+};
+
+
+const actualizarRolUsuarioService = async (id, nuevoRol) => {
+  const usuario = await UsuarioModel.findByIdAndUpdate(
+    id,
+    { rolUsuario: nuevoRol },
+    { new: true } // Devuelve el usuario actualizado
+  );
+  return usuario;
+};
+
+module.exports = { obtenerTodosLosUsuariosService, obteneUsuriosPorIdService, iniciarSesionService, crearUsuarioService, recuperarContraseniaUsuarioServices, cambioDeContraseniaUsuarioTokenServices, actualizarRolUsuarioService}
+
 

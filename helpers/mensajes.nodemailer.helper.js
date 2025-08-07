@@ -1,6 +1,8 @@
 const { transporter } = require("../middlewares/nodemailer.middleware");
 
 const registroExitoso= async (emailUsuario, nombreUsuario)=> {
+
+ 
 try {
     
     await transporter.sendMail({
@@ -19,11 +21,13 @@ try {
   return{
     msg: "ok",
     statusCode: 200,
+    
   }  
   
   }
 
- catch {
+ catch (error){
+  console.log(error)
    return{
     error,
     statusCode: 500,
@@ -44,7 +48,7 @@ try {
    
     html: `
     <b>Para ecuperar tu contraseña hace click en el link a continuacion:</b>
-    <a href="/recuperarConstrasenia"${token}>Ir a la página </a>
+    <a href="http://localhost:5173/changepass?token=${token}">Ir a la página </a>
     
 
     
