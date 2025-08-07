@@ -48,7 +48,7 @@ try {
    
     html: `
     <b>Para ecuperar tu contraseña hace click en el link a continuacion:</b>
-    <a href="http://localhost:5173/changepass?token=${token}">Ir a la página </a>
+    <a href="https://rollingvet-front.vercel.app/changepass?token=${token}">Ir a la página </a>
     
 
     
