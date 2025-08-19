@@ -3,7 +3,8 @@ const usuariosModel = require("../models/usuarios.model");
 const {
     obtenerTodosLosUsuariosService, 
     obteneUsuriosPorIdService, 
-    iniciarSesionService,crearUsuarioService, recuperarContraseniaUsuarioServices, cambioDeContraseniaUsuarioTokenServices, actualizarRolUsuarioService
+    iniciarSesionService,crearUsuarioService, recuperarContraseniaUsuarioServices, cambioDeContraseniaUsuarioTokenServices, 
+    actualizarRolUsuarioService, eliminarUnUsuarioPorIdServices
 } = require("../services/usuarios.services")
 
 const obtenerTodosLosUsuarios = async (req, res) => {
@@ -41,6 +42,14 @@ const crearUsuario = async (req, res) => {
         res.status(500).json({ msg: 'Error interno del servidor' });
     }
 }
+
+const eliminarUnUsuarioPorId = async (req, res) => {
+  const { msg, statusCode } = await eliminarUnUsuarioPorIdServices(
+    req.params.id
+  );
+  res.status(statusCode).json({ msg });
+};
+
 
 const iniciarSesion = async (req, res) => {
     try {
@@ -113,5 +122,5 @@ const actualizarRolUsuario = async (req, res) => {
 module.exports = {
     obtenerTodosLosUsuarios,
     obtenerUsuarioPorId, 
-    iniciarSesion ,crearUsuario, recuperarContraseniaUsuario, cambioDeContraseniaUsuarioToken, actualizarRolUsuario
+    iniciarSesion ,crearUsuario, recuperarContraseniaUsuario, cambioDeContraseniaUsuarioToken, actualizarRolUsuario, eliminarUnUsuarioPorId
 }

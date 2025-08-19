@@ -74,6 +74,15 @@ const crearUsuarioService = async (body) => {
     }
 }
 
+const eliminarUnUsuarioPorIdServices = async (idUsuario) => {
+  await usuariosModel.findByIdAndDelete({ _id: idUsuario });
+
+  return {
+    msg: "Usuario eliminado",
+    statusCode: 200,
+  };
+};
+
 
 const obtenerTodosLosUsuariosService = async () => {
     const usuarios = await usuariosModel.find();
@@ -151,9 +160,7 @@ const iniciarSesionService = async (body) => {
 
 const recuperarContraseniaUsuarioServices = async (emailUsuario) => {
   try {
-    // console.log(emailUsuario);
     const usuarioExiste = await usuariosModel.findOne({ emailUsuario });
-    // console.log(usuarioExiste);
 
     if (usuarioExiste) {
       const payload = {
@@ -173,6 +180,12 @@ const recuperarContraseniaUsuarioServices = async (emailUsuario) => {
       return {
         msg: "Mail enviado",
         statusCode: 200,
+      };
+    } else {
+      // Retorná algo explícito si no existe el usuario
+      return {
+        msg: "Usuario no encontrado",
+        statusCode: 404,
       };
     }
   } catch (error) {
@@ -236,6 +249,7 @@ const actualizarRolUsuarioService = async (id, nuevoRol) => {
   return usuario;
 };
 
-module.exports = { obtenerTodosLosUsuariosService, obteneUsuriosPorIdService, iniciarSesionService, crearUsuarioService, recuperarContraseniaUsuarioServices, cambioDeContraseniaUsuarioTokenServices, actualizarRolUsuarioService}
+module.exports = { obtenerTodosLosUsuariosService, obteneUsuriosPorIdService, iniciarSesionService, crearUsuarioService,
+   recuperarContraseniaUsuarioServices, cambioDeContraseniaUsuarioTokenServices, actualizarRolUsuarioService, eliminarUnUsuarioPorIdServices}
 
 
