@@ -4,7 +4,6 @@ const turnoSchema = new mongoose.Schema({
   nombreMascota: { type: String, required: true },
    especie: {
     type: String,
-    required: true,
     enum: ["perro", "gato", "ave", "otros"],
   },
 
