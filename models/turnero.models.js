@@ -1,6 +1,7 @@
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-const turnoSchema = new mongoose.Schema({
+
+const turnoSchema = new Schema({
   nombreMascota: { type: String, required: true },
    especie: {
     type: String,
@@ -17,4 +18,6 @@ const turnoSchema = new mongoose.Schema({
   hora: { type: String, required: true },
 });
 
-module.exports = mongoose.model("TurnoModel", turnoSchema);
+const TurnoModel = model("TurnoModel", turnoSchema);
+module.exports = TurnoModel;
+
