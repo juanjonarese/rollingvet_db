@@ -6,7 +6,11 @@ const turnoSchema = new mongoose.Schema({
     type: String,
     enum: ["perro", "gato", "ave", "otros"],
   },
-
+  veterinarioConsulta: {
+      type: Schema.Types.ObjectId,
+      ref: "usuarios",
+      required: true,
+    },
 
   detalleCita: { type: String, required: true },
   fecha: { type: Date, required: true },

@@ -6,7 +6,9 @@ const crearTurnoServices = async (data) => {
 };
 
 const obtenerTodosLosTurnosServices = async () => {
-  return await TurnoModel.find();
+  return await TurnoModel.find()
+  .populate("veterinarioConsulta", "nombreUsuario")
+  .exec();
 };
 
 module.exports = {

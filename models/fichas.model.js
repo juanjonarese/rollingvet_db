@@ -7,11 +7,7 @@ const FichaSchema = new Schema({
     required: true,
     trim: true,
   },
-  apellidoUsuario: {
-    type: String,
-    required: true,
-    trim: true,
-  },
+  
   telefonoUsuario: {
     type: String,
     required: true,
@@ -50,7 +46,7 @@ const FichaSchema = new Schema({
     trim: true,
   },
   fechaConsulta: {
-    type: String,
+    type: Date,
     required: true,
   },
   horaConsulta: {
